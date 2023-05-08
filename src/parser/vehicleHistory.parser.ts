@@ -1,4 +1,5 @@
-import { Parser } from 'src/parser/constants';
+import { Parser } from 'src/parser/parser.type';
+
 import { TVehicleHistoryResponse } from 'src/parser/types';
 
 const vehicleHistoryScraperData = {

@@ -1,4 +1,5 @@
-import { Parser, pageViewPort, waitForNavigationKey } from 'src/parser/constants';
+import { pageViewPort, waitForNavigationKey } from 'src/parser/constants';
+import { Parser } from 'src/parser/parser.type';
 import { TBidFaxResponse } from 'src/parser/types';
 
 const bidfaxScraperData = {

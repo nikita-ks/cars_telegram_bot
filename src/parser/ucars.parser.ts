@@ -1,4 +1,5 @@
-import { Parser, pageViewPort } from 'src/parser/constants';
+import { pageViewPort } from 'src/parser/constants';
+import { Parser } from 'src/parser/parser.type';
 import { TUcarsResponse } from 'src/parser/types';
 
 const ucarsScraperData = {

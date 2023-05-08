@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import puppeteer, { Browser } from 'puppeteer';
-import { Parser } from 'src/parser/constants';
+import { Parser } from 'src/parser/parser.type';
+
 import { KBBParser } from 'src/parser/kbb.parser';
 import { UcarsParser } from 'src/parser/ucars.parser';
 import { VehicleHistoryParser } from 'src/parser/vehicleHistory.parser';
