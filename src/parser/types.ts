@@ -31,8 +31,8 @@ export type TKBBResponse = {
   link: string;
 };
 
-export type TParseResources = [
-  TBaseResponse<TUcarsResponse[]>,
-  TBaseResponse<TKBBResponse[]>,
-  TBaseResponse<TVehicleHistoryResponse[]>,
-];
+export type TParseResources = (
+  | TBaseResponse<TUcarsResponse[]>
+  | TBaseResponse<TKBBResponse[]>
+  | TBaseResponse<TVehicleHistoryResponse[]>
+)[];

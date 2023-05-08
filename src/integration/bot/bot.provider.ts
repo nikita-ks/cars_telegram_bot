@@ -12,4 +12,8 @@ export class BotProvider {
   send(chatId: string, payload: string) {
     this.bot.telegram.sendMessage(chatId, payload);
   }
+
+  async launch(): Promise<void> {
+    await this.bot.launch();
+  }
 }

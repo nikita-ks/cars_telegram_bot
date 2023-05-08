@@ -1,18 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { BotProvider } from '../integration/bot/bot.provider';
-import { VinCollectScene } from '../telegraf/vinCollect.scene';
-import { VinResponseScene } from '../telegraf/vinResponse.scene';
 
+import { SceneFactory } from 'src/telegraf/scene.factory';
 import { Scenes, session } from 'telegraf';
+import { ParserService } from 'src/parser/parser.service';
+import { SceneIds } from 'src/config/constants';
 
 @Injectable()
 export class TelegrafService {
-  constructor(
-    private botProvider: BotProvider,
-    private vinCollectScene: VinCollectScene,
-    private vinResponseScene: VinResponseScene,
-  ) {
-    const stage = new Scenes.Stage<Scenes.SceneContext>([this.vinCollectScene.scene, this.vinResponseScene.scene]);
+  constructor(private botProvider: BotProvider, private parserService: ParserService) {
+    const scenes = SceneFactory(this.parserService);
+    const stage = new Scenes.Stage<Scenes.SceneContext>(scenes);
     this.botProvider.bot.use(session());
     this.botProvider.bot.use(stage.middleware());
     this.configure();
@@ -20,7 +18,7 @@ export class TelegrafService {
   private configure(): void {
     // all root bot commands
     this.botProvider.bot.start((ctx) => {
-      ctx.scene.enter(this.vinCollectScene.scene.id);
+      ctx.scene.enter(SceneIds.collect);
       return;
     });
   }

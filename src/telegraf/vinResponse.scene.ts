@@ -1,16 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { ParserService } from '../parser/parser.service';
+import { SceneIds } from 'src/config/constants';
+import { TKBBResponse, TUcarsResponse, TVehicleHistoryResponse } from 'src/parser/types';
 import { Scenes } from 'telegraf';
+import { ParserService } from '../parser/parser.service';
 
-const VIN_SCENE = 'vin_response_scene';
-type TRenderValue = { title: string; data: Record<string, string>[] }[];
+type TRenderValue = Awaited<ReturnType<ParserService['parseResources']>>;
+
 const render = (value: TRenderValue): string => {
   return value
     .map((v) => {
       const recordsCount = v.data.length;
 
       const formattedList = v.data
-        .map((value) => {
+        .map((value: TUcarsResponse | TKBBResponse | TVehicleHistoryResponse) => {
           const list = Object.entries(value)
             .map(([key, v]) => `*${key}:* ${v.replace(/[.\-]/g, '\\$&')}\n`)
             .join('')
@@ -23,11 +24,10 @@ const render = (value: TRenderValue): string => {
     .join('\n');
 };
 
-@Injectable()
 export class VinResponseScene {
   scene: Scenes.BaseScene<Scenes.SceneContext>;
   constructor(private parserService: ParserService) {
-    this.scene = new Scenes.BaseScene<Scenes.SceneContext>(VIN_SCENE);
+    this.scene = new Scenes.BaseScene<Scenes.SceneContext>(SceneIds.response);
     this.configure();
   }
 
@@ -35,6 +35,7 @@ export class VinResponseScene {
     this.scene.enter(async (ctx) => {
       const state = ctx.scene.state as { vinCode: string };
       const response = await this.parserService.parseResources(state.vinCode);
+
       ctx.replyWithMarkdownV2(render(response));
       ctx.scene.leave();
     });
