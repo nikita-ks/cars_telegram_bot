@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { BotModule } from 'src/integration/bot/bot.module';
-import { TelegrafService } from 'src/telegraf/telegraf.service';
+import { ParserModule } from 'src/parser/parser.module';
+import { BotModule } from '../integration/bot/bot.module';
+import { TelegrafService } from '../telegraf/telegraf.service';
 
 @Module({
-  imports: [BotModule],
+  imports: [BotModule, ParserModule],
   providers: [TelegrafService],
 })
 export class TelegrafModule {}
